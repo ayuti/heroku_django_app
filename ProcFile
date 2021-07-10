@@ -1,3 +1,1 @@
-web :gunicorn imageNetProj.wsgi
-
-
+web: gunicorn imageNetProj.wsgi
