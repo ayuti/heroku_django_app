@@ -15,7 +15,8 @@ import os
 import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
+#BASE_DIR = Path(__file__).resolve().parent.parent
 #BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -27,11 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%qz-61jkig0%szzfb_x15(!-#is%f9)qg@2k00)#3a&+fn@4ig'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['https://image-classify-application.herokuapp.com',
-'localhost',
-'127.0.0.1']
+ALLOWED_HOSTS = ['image-classify-application.herokuapp.com']
+#'localhost',
+#'127.0.0.1']
 
 
 # Application definition
@@ -43,9 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'firstApp',
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,7 +63,7 @@ ROOT_URLCONF = 'imageNetProj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'template')],
+        'DIRS': [os.path.join(PROJECT_ROOT,'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,7 +85,7 @@ WSGI_APPLICATION = 'imageNetProj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': PROJECT_ROOT / 'db.sqlite3',
     }
 }
 
@@ -124,16 +127,29 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT =os.path.join(BASE_DIR,'staticfiles')
+STATIC_ROOT =os.path.join(PROJECT_ROOT,'staticfiles')
 
 
 MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+MEDIA_ROOT=os.path.join(PROJECT_ROOT,'media')
+
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+import dj_database_url 
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
