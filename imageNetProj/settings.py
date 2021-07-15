@@ -31,8 +31,6 @@ SECRET_KEY = 'django-insecure-%qz-61jkig0%szzfb_x15(!-#is%f9)qg@2k00)#3a&+fn@4ig
 DEBUG = True
 
 ALLOWED_HOSTS = ['image-classify-application.herokuapp.com']
-#'localhost',
-#'127.0.0.1']
 
 
 # Application definition
