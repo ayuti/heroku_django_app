@@ -1,1 +1,1 @@
-# heroku_django_app
+# image_classify_app
