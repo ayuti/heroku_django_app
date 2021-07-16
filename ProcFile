@@ -1,1 +1,1 @@
-web:gunicorn imageNetProj.wsgi --log-file -
+web:gunicorn imageNetProj.wsgi 
